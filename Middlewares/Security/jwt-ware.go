@@ -1,6 +1,8 @@
 package Security
 
 import (
+	"errors"
+	"log"
 	"time"
 
 	jwt "github.com/form3tech-oss/jwt-go"
@@ -10,30 +12,36 @@ import (
 
 var (
 	MY_SIGNING_KEY  = []byte("mysupersecretkey")
+	UID             = 12
 	USERNAME        = "msrexe"
 	PASSWORD        = "123456"
+	EMAIL           = "mlheymen.ms@gmail.com"
 	EXPIRATION_TIME = time.Now().Add(time.Hour * 2).Unix()
 	isAdmin         = true
-	isUserExist     = false
+	//isUserExist          = false
+	BROKEN_TOKEN_MESSAGE = "Token is broken"
 )
 
-func SetupMW(app *fiber.App) {
+func SetupMW(api fiber.Router) {
+	auth := api.Group("/auth")
+	auth.Post("/login", loginHandler)
+	//auth.Post("/register", registerHandler)
 
 	//JWTware
-	app.Use(jwtware.New(jwtware.Config{
+	api.Use(jwtware.New(jwtware.Config{
 		SigningKey: MY_SIGNING_KEY,
 	}))
 
-	app.Post("/login", loginHandler)
 }
 
-func register(c *fiber.Ctx) error {
-	//register işlemleri
-}
+// func register(c *fiber.Ctx) error {
+// 	register işlemleri
+// }
 
 func loginHandler(c *fiber.Ctx) error {
 	user := c.FormValue("user")
 	pass := c.FormValue("pass")
+	log.Println(user, pass)
 
 	// Throws Unauthorized error
 	if user != USERNAME || pass != PASSWORD {
@@ -45,7 +53,9 @@ func loginHandler(c *fiber.Ctx) error {
 
 	// Set claims
 	claims := token.Claims.(jwt.MapClaims)
+	claims["uid"] = UID
 	claims["uname"] = USERNAME
+	claims["email"] = EMAIL
 	claims["admin"] = isAdmin
 	claims["exp"] = EXPIRATION_TIME
 
@@ -56,4 +66,15 @@ func loginHandler(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{"token": t})
+}
+
+func GetUser(c *fiber.Ctx) (jwt.MapClaims, error) {
+	user := c.Locals("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	uname := claims["uname"].(string)
+	mail := claims["email"].(string)
+	if uname == "" || mail == "" {
+		return nil, errors.New(BROKEN_TOKEN_MESSAGE)
+	}
+	return claims, nil
 }

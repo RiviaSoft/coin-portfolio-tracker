@@ -11,8 +11,15 @@ const (
 )
 
 func main() {
+
+}
+
+func init() {
 	app := fiber.New()
-	Routers.SetupRoutes(app)
-	Security.SetupMW(app)
+	api := app.Group("/api")
+
+	Security.SetupMW(api)
+	Routers.SetupRoutes(api)
+
 	app.Listen(port)
 }
