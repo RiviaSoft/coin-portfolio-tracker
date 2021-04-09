@@ -72,7 +72,7 @@ func loginHandler(c *fiber.Ctx) error {
 	claims["exp"] = EXPIRATION_TIME
 
 	// Generate encoded token and send it as response.
-	t, err := token.SignedString(MY_SIGNING_KEY)
+	t, err := token.SignedString([]byte(GoDotEnvVariable("SIGNING_KEY")))
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
