@@ -2,12 +2,9 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	. "github.com/msrexe/portfolio-tracker/Core/EnvVariables"
 	"github.com/msrexe/portfolio-tracker/Middlewares/Security"
 	"github.com/msrexe/portfolio-tracker/Routers"
-)
-
-const (
-	port = ":8000"
 )
 
 func main() {
@@ -21,5 +18,5 @@ func init() {
 	Security.SetupMW(api)
 	Routers.SetupRoutes(api)
 
-	app.Listen(port)
+	app.Listen(":" + GoDotEnvVariable("PORT"))
 }

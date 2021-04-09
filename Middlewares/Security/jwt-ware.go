@@ -5,16 +5,15 @@ import (
 	"log"
 	"time"
 
-	business "github.com/msrexe/portfolio-tracker/Business"
-	. "github.com/msrexe/portfolio-tracker/DataAccess"
-
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"
+	business "github.com/msrexe/portfolio-tracker/Business"
+	. "github.com/msrexe/portfolio-tracker/Core/EnvVariables"
+	. "github.com/msrexe/portfolio-tracker/DataAccess"
 )
 
 var (
-	MY_SIGNING_KEY  = []byte("mysupersecretkey")
 	UID             = 12
 	USERNAME        = "msrexe"
 	PASSWORD        = "123456"
@@ -32,7 +31,7 @@ func SetupMW(api fiber.Router) {
 
 	//JWTware
 	api.Use(jwtware.New(jwtware.Config{
-		SigningKey: MY_SIGNING_KEY,
+		SigningKey: []byte(GoDotEnvVariable("SIGNING_KEY")),
 	}))
 
 }
