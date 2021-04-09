@@ -1,7 +1,6 @@
 package Security
 
 import (
-	"errors"
 	"log"
 	"time"
 
@@ -68,13 +67,10 @@ func loginHandler(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"token": t})
 }
 
-func GetUser(c *fiber.Ctx) (jwt.MapClaims, error) {
+func GetUser(c *fiber.Ctx) jwt.MapClaims {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
-	uname := claims["uname"].(string)
-	mail := claims["email"].(string)
-	if uname == "" || mail == "" {
-		return nil, errors.New(BROKEN_TOKEN_MESSAGE)
-	}
-	return claims, nil
+	// uname := claims["uname"].(string)
+	// mail := claims["email"].(string)
+	return claims
 }

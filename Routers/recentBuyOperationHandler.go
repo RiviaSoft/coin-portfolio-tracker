@@ -15,23 +15,35 @@ func GetAllOperations(c *fiber.Ctx) error {
 }
 func AddOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	return c.SendString("add operation success")
-}
-func DeleteOperation(c *fiber.Ctx) error {
-	c.Accepts("application/json")
-	return c.SendString("delete operation success")
-}
-func UpdateOperation(c *fiber.Ctx) error {
-	c.Accepts("application/json")
-	claims, err := GetUser(c)
-	if err != nil {
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
+	claims := GetUser(c)
 	var operation RecentBuyOperation
-	err = json.Unmarshal(c.Body(), &operation)
+	err := json.Unmarshal(c.Body(), &operation)
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
-	result := business.UpdateBuyOperation(claims["uid"].(float64), operation)
+	result := business.AddBuyOperation(int(claims["uid"].(float64)), operation)
+	return c.JSON(result)
+}
+func DeleteOperation(c *fiber.Ctx) error {
+	c.Accepts("application/json")
+	claims := GetUser(c)
+	var operation RecentBuyOperation
+	err := json.Unmarshal(c.Body(), &operation)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	result := business.DeleteBuyOperation(int(claims["uid"].(float64)), operation)
+	return c.JSON(result)
+}
+
+func UpdateOperation(c *fiber.Ctx) error {
+	c.Accepts("application/json")
+	claims := GetUser(c)
+	var operation RecentBuyOperation
+	err := json.Unmarshal(c.Body(), &operation)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	result := business.UpdateBuyOperation(int(claims["uid"].(float64)), operation)
 	return c.JSON(result)
 }

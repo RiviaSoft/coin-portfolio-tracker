@@ -11,8 +11,8 @@ func SetupRoutes(api fiber.Router) {
 	//Diğer account operasyonları jwt-ware içinde
 
 	//Recent Buy Operations
-	api.Get("/operations/getall", GetAllOperations)
 	//api.Get("/operations/get/id::id", GetByOperationId)
+	api.Get("/operations/getall", GetAllOperations)
 	api.Post("/operations/add", AddOperation)
 	api.Post("/operations/delete", DeleteOperation)
 	api.Post("/operations/update", UpdateOperation)
