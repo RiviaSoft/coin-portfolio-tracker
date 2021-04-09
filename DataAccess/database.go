@@ -1,3 +1,0 @@
-package DataAccess
-
-//db işlemleri

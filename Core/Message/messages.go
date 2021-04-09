@@ -6,4 +6,8 @@ const (
 	OperationAdded    = "İşlem eklendi"
 	OperationsListed  = "İşlemler listelendi"
 	OperationArchived = "İşlem arşivlendi"
+
+	UserAdded   = "Kullanıcı eklendi"
+	UserDeleted = "Kullanıcı silindi"
+	UserUpdated = "Kullanıcı güncellendi"
 )

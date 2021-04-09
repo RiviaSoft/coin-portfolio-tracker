@@ -1,8 +1,12 @@
 package Security
 
 import (
+	"encoding/json"
 	"log"
 	"time"
+
+	business "github.com/msrexe/portfolio-tracker/Business"
+	. "github.com/msrexe/portfolio-tracker/DataAccess"
 
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
@@ -24,7 +28,7 @@ var (
 func SetupMW(api fiber.Router) {
 	auth := api.Group("/auth")
 	auth.Post("/login", loginHandler)
-	//auth.Post("/register", registerHandler)
+	auth.Post("/register", registerHandler)
 
 	//JWTware
 	api.Use(jwtware.New(jwtware.Config{
@@ -33,13 +37,23 @@ func SetupMW(api fiber.Router) {
 
 }
 
-// func register(c *fiber.Ctx) error {
-// 	register işlemleri
-// }
+func registerHandler(c *fiber.Ctx) error {
+	c.Accepts("application/json")
+	var user User
+	err := json.Unmarshal(c.Body(), &user)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	result := business.AddUser(user)
+	if result.Success {
+		return c.JSON(result)
+	}
+	return c.SendStatus(409) // already exists
+}
 
 func loginHandler(c *fiber.Ctx) error {
-	user := c.FormValue("user")
-	pass := c.FormValue("pass")
+	user := c.FormValue("username")
+	pass := c.FormValue("password")
 	log.Println(user, pass)
 
 	// Throws Unauthorized error
@@ -67,7 +81,7 @@ func loginHandler(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"token": t})
 }
 
-func GetUser(c *fiber.Ctx) jwt.MapClaims {
+func GetUserClaims(c *fiber.Ctx) jwt.MapClaims {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	// uname := claims["uname"].(string)

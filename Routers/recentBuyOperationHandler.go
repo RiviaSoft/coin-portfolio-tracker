@@ -15,7 +15,7 @@ func GetAllOperations(c *fiber.Ctx) error {
 }
 func AddOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	claims := GetUser(c)
+	claims := GetUserClaims(c)
 	var operation RecentBuyOperation
 	err := json.Unmarshal(c.Body(), &operation)
 	if err != nil {
@@ -26,7 +26,7 @@ func AddOperation(c *fiber.Ctx) error {
 }
 func DeleteOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	claims := GetUser(c)
+	claims := GetUserClaims(c)
 	var operation RecentBuyOperation
 	err := json.Unmarshal(c.Body(), &operation)
 	if err != nil {
@@ -38,7 +38,7 @@ func DeleteOperation(c *fiber.Ctx) error {
 
 func UpdateOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	claims := GetUser(c)
+	claims := GetUserClaims(c)
 	var operation RecentBuyOperation
 	err := json.Unmarshal(c.Body(), &operation)
 	if err != nil {

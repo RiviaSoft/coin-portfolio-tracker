@@ -11,7 +11,7 @@ import (
 
 func GetAllArchivedOperations(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	claims := GetUser(c)
+	claims := GetUserClaims(c)
 	var operation ArchivedOperation
 	err := json.Unmarshal(c.Body(), &operation)
 	if err != nil {
@@ -22,7 +22,7 @@ func GetAllArchivedOperations(c *fiber.Ctx) error {
 }
 func AddArchivedOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	claims := GetUser(c)
+	claims := GetUserClaims(c)
 	var operation ArchivedOperation
 	err := json.Unmarshal(c.Body(), &operation)
 	if err != nil {
@@ -33,7 +33,7 @@ func AddArchivedOperation(c *fiber.Ctx) error {
 }
 func DeleteArchivedOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	claims := GetUser(c)
+	claims := GetUserClaims(c)
 	var operation ArchivedOperation
 	err := json.Unmarshal(c.Body(), &operation)
 	if err != nil {

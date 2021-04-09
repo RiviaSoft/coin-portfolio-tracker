@@ -3,26 +3,36 @@ package Business
 import (
 	Messages "github.com/msrexe/portfolio-tracker/Core/Message"
 	. "github.com/msrexe/portfolio-tracker/Core/Result"
-
 	. "github.com/msrexe/portfolio-tracker/DataAccess"
 )
 
-func GetAllArchivedOperations(userId int) []ArchivedOperation {
+func GetUser(userId int) User {
 	// db katmanına gönderme
-	return []ArchivedOperation{}
+
+	return User{}
 }
-func AddArchivedOperation(userId int, operation ArchivedOperation) Result {
-	// db katmanına gönderme
-	return Result{
-		Success: true,
-		Message: Messages.OperationArchived,
-	}
-}
-func DeleteArchivedOperation(userId int, operation ArchivedOperation) Result {
+func AddUser(user User) Result {
 	// db katmanına gönderme
 
 	return Result{
 		Success: true,
-		Message: Messages.OperationRemoved,
+		Message: Messages.UserAdded,
+	}
+}
+func DeleteUser(userId int, user User) Result {
+	// db katmanına gönderme
+
+	return Result{
+		Success: true,
+		Message: Messages.UserDeleted,
+	}
+
+}
+func UpdateUser(userId int, user User) Result {
+	// db katmanına gönderme
+
+	return Result{
+		Success: true,
+		Message: Messages.UserUpdated,
 	}
 }

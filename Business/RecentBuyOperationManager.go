@@ -9,7 +9,7 @@ import (
 func GetAllBuyOperations(userId int) []RecentBuyOperation {
 	// db katmanına gönderme
 
-	return
+	return []RecentBuyOperation{}
 }
 func AddBuyOperation(userId int, operation RecentBuyOperation) Result {
 	// db katmanına gönderme
