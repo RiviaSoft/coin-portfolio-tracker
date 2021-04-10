@@ -11,14 +11,14 @@ func GetAllArchivedOperations(userId int) []ArchivedOperation {
 	// db katmanına gönderme
 	return []ArchivedOperation{}
 }
-func AddArchivedOperation(userId int, operation ArchivedOperation) Result {
+func AddArchivedOperation(operation ArchivedOperation) Result {
 	// db katmanına gönderme
 	return Result{
 		Success: true,
 		Message: Messages.OperationArchived,
 	}
 }
-func DeleteArchivedOperation(userId int, operation ArchivedOperation) Result {
+func DeleteArchivedOperation(operation ArchivedOperation) Result {
 	// db katmanına gönderme
 
 	return Result{

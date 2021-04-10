@@ -21,7 +21,10 @@ func AddOperation(c *fiber.Ctx) error {
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
-	result := business.AddBuyOperation(int(claims["uid"].(float64)), operation)
+	if operation.UserId != claims["uid"] {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	result := business.AddBuyOperation(operation)
 	return c.JSON(result)
 }
 func DeleteOperation(c *fiber.Ctx) error {
@@ -32,7 +35,10 @@ func DeleteOperation(c *fiber.Ctx) error {
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
-	result := business.DeleteBuyOperation(int(claims["uid"].(float64)), operation)
+	if operation.UserId != claims["uid"] {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	result := business.DeleteBuyOperation(operation)
 	return c.JSON(result)
 }
 
@@ -44,6 +50,9 @@ func UpdateOperation(c *fiber.Ctx) error {
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
-	result := business.UpdateBuyOperation(int(claims["uid"].(float64)), operation)
+	if operation.UserId != claims["uid"] {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	result := business.UpdateBuyOperation(operation)
 	return c.JSON(result)
 }

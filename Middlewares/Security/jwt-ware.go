@@ -21,7 +21,6 @@ var (
 	EXPIRATION_TIME = time.Now().Add(time.Hour * 2).Unix()
 	isAdmin         = true
 	//isUserExist          = false
-	BROKEN_TOKEN_MESSAGE = "Token is broken"
 )
 
 func SetupMW(api fiber.Router) {

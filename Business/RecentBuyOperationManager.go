@@ -11,7 +11,7 @@ func GetAllBuyOperations(userId int) []RecentBuyOperation {
 
 	return []RecentBuyOperation{}
 }
-func AddBuyOperation(userId int, operation RecentBuyOperation) Result {
+func AddBuyOperation(operation RecentBuyOperation) Result {
 	// db katmanına gönderme
 
 	return Result{
@@ -19,7 +19,7 @@ func AddBuyOperation(userId int, operation RecentBuyOperation) Result {
 		Message: Messages.OperationAdded,
 	}
 }
-func DeleteBuyOperation(userId int, operation RecentBuyOperation) Result {
+func DeleteBuyOperation(operation RecentBuyOperation) Result {
 	// db katmanına gönderme
 
 	return Result{
@@ -28,7 +28,7 @@ func DeleteBuyOperation(userId int, operation RecentBuyOperation) Result {
 	}
 
 }
-func UpdateBuyOperation(userId int, operation RecentBuyOperation) Result {
+func UpdateBuyOperation(operation RecentBuyOperation) Result {
 
 	return Result{
 		Success: true,

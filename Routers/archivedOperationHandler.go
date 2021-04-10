@@ -20,6 +20,7 @@ func GetAllArchivedOperations(c *fiber.Ctx) error {
 	result := business.GetAllArchivedOperations(int(claims["uid"].(float64)))
 	return c.JSON(result)
 }
+
 func AddArchivedOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
 	claims := GetUserClaims(c)
@@ -28,9 +29,14 @@ func AddArchivedOperation(c *fiber.Ctx) error {
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
-	result := business.AddArchivedOperation(int(claims["uid"].(float64)), operation)
+	if operation.UserId != claims["uid"] {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+
+	result := business.AddArchivedOperation(operation)
 	return c.JSON(result)
 }
+
 func DeleteArchivedOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
 	claims := GetUserClaims(c)
@@ -39,6 +45,9 @@ func DeleteArchivedOperation(c *fiber.Ctx) error {
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
-	result := business.DeleteArchivedOperation(int(claims["uid"].(float64)), operation)
+	if operation.UserId != claims["uid"] {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	result := business.DeleteArchivedOperation(operation)
 	return c.JSON(result)
 }
