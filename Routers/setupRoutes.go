@@ -18,8 +18,8 @@ func SetupRoutes(api fiber.Router) {
 	api.Post("/operations/update", UpdateOperation)
 
 	//Archived Buy Operations
-	api.Get("/archivedOperations/getall", GetAllArchivedOperations)
+	api.Get("/archivedoperations/getall", GetAllArchivedOperations)
 	//api.Get("/archivedOperations/get/id::id", GetByOperationId)
-	api.Post("/archivedOperations/add", AddArchivedOperation)
+	api.Post("/archivedoperations/add", AddArchivedOperation)
 	api.Post("/archivedOperations/delete", DeleteArchivedOperation)
 }

@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	. "github.com/msrexe/portfolio-tracker/Core/EnvVariables"
-	"github.com/msrexe/portfolio-tracker/Middlewares/Security"
+	"github.com/msrexe/portfolio-tracker/Core/Security"
 	"github.com/msrexe/portfolio-tracker/Routers"
 )
 

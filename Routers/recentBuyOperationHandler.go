@@ -5,12 +5,11 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	business "github.com/msrexe/portfolio-tracker/Business"
+	. "github.com/msrexe/portfolio-tracker/Core/Security"
 	. "github.com/msrexe/portfolio-tracker/DataAccess"
-	. "github.com/msrexe/portfolio-tracker/Middlewares/Security"
 )
 
 func GetAllOperations(c *fiber.Ctx) error {
-	c.Accepts("application/json")
 	return c.SendString("get all operation success")
 }
 func AddOperation(c *fiber.Ctx) error {

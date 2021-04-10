@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/msrexe/portfolio-tracker/Middlewares/Security"
+	"github.com/msrexe/portfolio-tracker/Core/Security"
 )
 
 func AccountHandler(c *fiber.Ctx) error {
