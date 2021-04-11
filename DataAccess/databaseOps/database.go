@@ -1,3 +1,0 @@
-package databaseOps
-
-//db işlemleri

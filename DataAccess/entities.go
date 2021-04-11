@@ -13,14 +13,14 @@ package DataAccess
 // 	CoinAmount float64 `json:"coinamount"`
 // }
 
-type User struct {
+type UserModel struct {
 	Id       int    `json:"id"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-type DBUser struct {
+type User struct {
 	Id           int
 	Name         string
 	Email        string
@@ -41,5 +41,6 @@ type ArchivedOperation struct {
 	UserId     int     `json:"userid"`
 	CoinSymbol string  `json:"coinsymbol"`
 	CoinAmount float32 `json:"coinamount"`
+	BuyCost    float32 `json:"buycost"`
 	SellCost   float32 `json:"sellcost"`
 }

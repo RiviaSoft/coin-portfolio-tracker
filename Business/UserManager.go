@@ -6,12 +6,12 @@ import (
 	. "github.com/msrexe/portfolio-tracker/DataAccess"
 )
 
-func GetUser(userId int) User {
+func GetUser(mail string) User {
 	// db katmanına gönderme
 
 	return User{}
 }
-func AddUser(user User) Result {
+func AddUser(user UserModel) Result {
 	// db katmanına gönderme
 
 	return Result{
@@ -19,7 +19,7 @@ func AddUser(user User) Result {
 		Message: Messages.UserAdded,
 	}
 }
-func DeleteUser(userId int, user User) Result {
+func DeleteUser(userId int, user UserModel) Result {
 	// db katmanına gönderme
 
 	return Result{
@@ -28,7 +28,7 @@ func DeleteUser(userId int, user User) Result {
 	}
 
 }
-func UpdateUser(userId int, user User) Result {
+func UpdateUser(userId int, user UserModel) Result {
 	// db katmanına gönderme
 
 	return Result{

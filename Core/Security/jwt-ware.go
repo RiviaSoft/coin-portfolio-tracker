@@ -37,7 +37,7 @@ func SetupMW(api fiber.Router) {
 
 func registerHandler(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	var user User
+	var user UserModel
 	err := json.Unmarshal(c.Body(), &user)
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
@@ -50,12 +50,12 @@ func registerHandler(c *fiber.Ctx) error {
 }
 
 func loginHandler(c *fiber.Ctx) error {
-	user := c.FormValue("username")
+	email := c.FormValue("email")
 	pass := c.FormValue("password")
-	log.Println(user, pass)
+	log.Println(email, pass)
 
 	// Throws Unauthorized error
-	if user != USERNAME || pass != PASSWORD {
+	if email != EMAIL || pass != PASSWORD {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 
