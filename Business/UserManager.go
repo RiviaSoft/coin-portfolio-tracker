@@ -1,36 +1,77 @@
 package Business
 
 import (
+	"log"
+
 	Messages "github.com/msrexe/portfolio-tracker/Core/Message"
 	. "github.com/msrexe/portfolio-tracker/Core/Result"
 	. "github.com/msrexe/portfolio-tracker/DataAccess"
+	"github.com/msrexe/portfolio-tracker/DataAccess/databaseOperations"
+	Security "github.com/msrexe/portfolio-tracker/Security"
 )
 
-func GetUser(mail string) User {
-	// db katmanına gönderme
-
-	return User{}
+func GetUser(mail string) (User, error) {
+	result, err := databaseOperations.GetByMail(mail)
+	if err != nil {
+		log.Println(err.Error())
+		return User{}, err
+	}
+	return result, nil
 }
-func AddUser(user UserModel) Result {
-	// db katmanına gönderme
 
+func AddUser(user UserModel) Result {
+	hashedPass, _ := Security.HashPassword(user.Password)
+	hashedUser := User{
+		Name:         user.Name,
+		Email:        user.Email,
+		PasswordHash: hashedPass,
+	}
+	err := databaseOperations.AddUser(hashedUser)
+	if err != nil {
+		return Result{
+			Success: false,
+			Message: err.Error(),
+		}
+	}
 	return Result{
 		Success: true,
 		Message: Messages.UserAdded,
 	}
 }
-func DeleteUser(userId int, user UserModel) Result {
-	// db katmanına gönderme
-
+func DeleteUser(user UserModel) Result {
+	hashedPass, _ := Security.HashPassword(user.Password)
+	hashedUser := User{
+		Name:         user.Name,
+		Email:        user.Email,
+		PasswordHash: hashedPass,
+	}
+	err := databaseOperations.DeleteUser(hashedUser)
+	if err != nil {
+		return Result{
+			Success: false,
+			Message: err.Error(),
+		}
+	}
 	return Result{
 		Success: true,
 		Message: Messages.UserDeleted,
 	}
 
 }
-func UpdateUser(userId int, user UserModel) Result {
-	// db katmanına gönderme
-
+func UpdateUser(user UserModel) Result {
+	hashedPass, _ := Security.HashPassword(user.Password)
+	hashedUser := User{
+		Name:         user.Name,
+		Email:        user.Email,
+		PasswordHash: hashedPass,
+	}
+	err := databaseOperations.UpdateUser(hashedUser)
+	if err != nil {
+		return Result{
+			Success: false,
+			Message: err.Error(),
+		}
+	}
 	return Result{
 		Success: true,
 		Message: Messages.UserUpdated,

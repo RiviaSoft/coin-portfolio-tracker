@@ -17,17 +17,19 @@ func AddRecentBuyOperation(operation RecentBuyOperation) error {
 	return nil
 }
 
-func GetAllRecentBuyOperation(userId int) []RecentBuyOperation {
+func GetAllRecentBuyOperation(userId int) ([]RecentBuyOperation, error) {
 	db, err := ConnectDB()
 	if err != nil {
 		log.Println(err.Error())
+		return nil, err
 	}
 	var operations []RecentBuyOperation
-	result := db.Where("userid = ?", userId).Find(&operations)
+	result := db.Where("user_id = ?", userId).Find(&operations)
 	if result.Error != nil {
 		log.Println(result.Error)
+		return nil, err
 	}
-	return operations
+	return operations, nil
 }
 
 func DeleteRecentBuyOperation(operation RecentBuyOperation) error {
@@ -46,7 +48,7 @@ func UpdateRecentBuyOperation(operation RecentBuyOperation) error {
 		log.Println(err.Error())
 		return err
 	}
-	db.Where("id = ?", operation.Id).Updates(&operation)
+	db.Select("id = ?", operation.Id).Updates(&operation)
 	return nil
 }
 
@@ -62,17 +64,19 @@ func AddArchivedOperation(operation ArchivedOperation) error {
 	return nil
 }
 
-func GetAllArchivedOperation(userId int) []ArchivedOperation {
+func GetAllArchivedOperation(userId int) ([]ArchivedOperation, error) {
 	db, err := ConnectDB()
 	if err != nil {
 		log.Println(err.Error())
+		return nil, err
 	}
 	var operations []ArchivedOperation
-	result := db.Where("userid = ?", userId).Find(&operations)
+	result := db.Where("user_id = ?", userId).Find(&operations)
 	if result.Error != nil {
 		log.Println(result.Error)
+		return nil, err
 	}
-	return operations
+	return operations, nil
 }
 
 func DeleteArchivedOperation(operation ArchivedOperation) error {
@@ -97,17 +101,18 @@ func AddUser(user User) error {
 	return nil
 }
 
-func GetByMail(mail string) User {
+func GetByMail(mail string) (User, error) {
 	db, err := ConnectDB()
 	if err != nil {
 		log.Println(err.Error())
+		return User{}, err
 	}
 	var user User
-	result := db.Where("email = ?", mail).First(&user)
+	result := db.Select("email = ?", mail).First(&user)
 	if result.Error != nil {
 		log.Println(result.Error)
 	}
-	return user
+	return user, nil
 }
 
 func DeleteUser(user User) error {
@@ -126,6 +131,6 @@ func UpdateUser(user User) error {
 		log.Println(err.Error())
 		return err
 	}
-	db.Where("id = ?", user.Id).Updates(&user)
+	db.Select("id = ?", user.Id).Updates(&user)
 	return nil
 }

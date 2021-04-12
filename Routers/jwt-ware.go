@@ -1,26 +1,14 @@
-package Security
+package Routers
 
 import (
 	"encoding/json"
-	"log"
-	"time"
 
-	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"
 	business "github.com/msrexe/portfolio-tracker/Business"
 	. "github.com/msrexe/portfolio-tracker/Core/EnvVariables"
 	. "github.com/msrexe/portfolio-tracker/DataAccess"
-)
-
-var (
-	UID             = 12
-	USERNAME        = "msrexe"
-	PASSWORD        = "123456"
-	EMAIL           = "mlheymen.ms@gmail.com"
-	EXPIRATION_TIME = time.Now().Add(time.Hour * 2).Unix()
-	isAdmin         = true
-	//isUserExist          = false
+	"github.com/msrexe/portfolio-tracker/Security"
 )
 
 func SetupMW(api fiber.Router) {
@@ -49,40 +37,30 @@ func registerHandler(c *fiber.Ctx) error {
 	return c.SendStatus(409) // already exists
 }
 
+var (
+	PASSWORD = "123456"
+	EMAIL    = "mlheymen.ms@gmail.com"
+)
+
 func loginHandler(c *fiber.Ctx) error {
 	email := c.FormValue("email")
 	pass := c.FormValue("password")
-	log.Println(email, pass)
 
+	user, err := business.GetUser(email)
+	if err != nil {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
 	// Throws Unauthorized error
-	if email != EMAIL || pass != PASSWORD {
+	hashedPass, err := Security.HashPassword(pass)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	if hashedPass != user.PasswordHash {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
-
-	// Create token
-	token := jwt.New(jwt.SigningMethodHS256)
-
-	// Set claims
-	claims := token.Claims.(jwt.MapClaims)
-	claims["uid"] = UID
-	claims["uname"] = USERNAME
-	claims["email"] = EMAIL
-	claims["admin"] = isAdmin
-	claims["exp"] = EXPIRATION_TIME
-
-	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte(GoDotEnvVariable("SIGNING_KEY")))
+	t, err := Security.CreateToken(user.Id, user.Name, user.Email)
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
-
 	return c.JSON(fiber.Map{"token": t})
-}
-
-func GetUserClaims(c *fiber.Ctx) jwt.MapClaims {
-	user := c.Locals("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	// uname := claims["uname"].(string)
-	// mail := claims["email"].(string)
-	return claims
 }

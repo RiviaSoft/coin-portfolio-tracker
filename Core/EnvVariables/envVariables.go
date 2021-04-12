@@ -1,4 +1,4 @@
-package EnvVariables
+package Security
 
 import (
 	"log"
