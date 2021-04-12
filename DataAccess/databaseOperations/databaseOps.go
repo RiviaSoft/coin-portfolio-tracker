@@ -2,6 +2,7 @@ package databaseOperations
 
 import (
 	"log"
+	"strconv"
 
 	. "github.com/msrexe/portfolio-tracker/DataAccess"
 )
@@ -24,7 +25,7 @@ func GetAllRecentBuyOperation(userId int) ([]RecentBuyOperation, error) {
 		return nil, err
 	}
 	var operations []RecentBuyOperation
-	result := db.Where("user_id = ?", userId).Find(&operations)
+	result := db.Where("user_id = ?", strconv.Itoa(userId)).Find(&operations)
 	if result.Error != nil {
 		log.Println(result.Error)
 		return nil, err
@@ -71,7 +72,7 @@ func GetAllArchivedOperation(userId int) ([]ArchivedOperation, error) {
 		return nil, err
 	}
 	var operations []ArchivedOperation
-	result := db.Where("user_id = ?", userId).Find(&operations)
+	result := db.Where("user_id = ?", strconv.Itoa(userId)).Find(&operations)
 	if result.Error != nil {
 		log.Println(result.Error)
 		return nil, err
@@ -108,7 +109,7 @@ func GetByMail(mail string) (User, error) {
 		return User{}, err
 	}
 	var user User
-	result := db.Select("email = ?", mail).First(&user)
+	result := db.Where("email = ?", mail).Find(&user)
 	if result.Error != nil {
 		log.Println(result.Error)
 	}

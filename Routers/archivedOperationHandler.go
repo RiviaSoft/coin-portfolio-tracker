@@ -17,31 +17,30 @@ func GetAllArchivedOperations(c *fiber.Ctx) error {
 
 func AddArchivedOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	claims := Security.GetUserClaims(c)
 	var operation ArchivedOperation
 	err := json.Unmarshal(c.Body(), &operation)
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
-	if operation.UserId != claims["uid"] {
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
-
+	// claims := Security.GetUserClaims(c)
+	// if operation.UserId != claims["uid"] {
+	// 	return c.SendStatus(fiber.StatusUnauthorized)
+	// }
 	result := business.AddArchivedOperation(operation)
 	return c.JSON(result)
 }
 
 func DeleteArchivedOperation(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	claims := Security.GetUserClaims(c)
 	var operation ArchivedOperation
 	err := json.Unmarshal(c.Body(), &operation)
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
-	if operation.UserId != claims["uid"] {
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
+	// claims := Security.GetUserClaims(c)
+	// if operation.UserId != claims["uid"] {
+	// 	return c.SendStatus(fiber.StatusUnauthorized)
+	// }
 	result := business.DeleteArchivedOperation(operation)
 	return c.JSON(result)
 }

@@ -37,11 +37,6 @@ func registerHandler(c *fiber.Ctx) error {
 	return c.SendStatus(409) // already exists
 }
 
-var (
-	PASSWORD = "123456"
-	EMAIL    = "mlheymen.ms@gmail.com"
-)
-
 func loginHandler(c *fiber.Ctx) error {
 	email := c.FormValue("email")
 	pass := c.FormValue("password")
@@ -51,11 +46,7 @@ func loginHandler(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusNotFound)
 	}
 	// Throws Unauthorized error
-	hashedPass, err := Security.HashPassword(pass)
-	if err != nil {
-		return c.SendStatus(fiber.StatusBadRequest)
-	}
-	if hashedPass != user.PasswordHash {
+	if !Security.CheckPasswordHash(pass, user.PasswordHash) {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 	t, err := Security.CreateToken(user.Id, user.Name, user.Email)
