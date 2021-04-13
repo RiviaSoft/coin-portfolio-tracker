@@ -94,10 +94,14 @@ func DeleteArchivedOperation(operation ArchivedOperation) error {
 //USER
 func AddUser(user User) error {
 	db, err := ConnectDB()
-	db.Create(&user)
 	if err != nil {
 		log.Println(err.Error())
 		return err
+	}
+	result := db.Create(&user)
+	if result.Statement.Error != nil {
+		log.Println(result.Statement.Error)
+		return result.Statement.Error
 	}
 	return nil
 }
