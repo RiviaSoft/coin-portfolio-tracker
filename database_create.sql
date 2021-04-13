@@ -25,7 +25,7 @@ CREATE TABLE `archived_operations` (
 CREATE TABLE `users` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL,
-  `email` varchar(40) NOT NULL,
+  `email` varchar(40) NOT NULL UNIQUE,
   `password_hash` varchar(300) NOT NULL,
     PRIMARY KEY (id)
 )  CHARSET=utf8mb4;
