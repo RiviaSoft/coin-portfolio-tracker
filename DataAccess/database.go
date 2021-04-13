@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	. "github.com/msrexe/portfolio-tracker/Core/EnvVariables"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -17,10 +18,10 @@ type DSNConfig struct {
 
 func ConnectDB() (*gorm.DB, error) {
 	dbConfig := DSNConfig{
-		User:   "root",
-		Pass:   "",
-		Url:    "127.0.0.1:3306",
-		DBName: "demo",
+		User:   GoDotEnvVariable("DB_USER"),
+		Pass:   GoDotEnvVariable("DB_PASS"),
+		Url:    GoDotEnvVariable("DB_URL"),
+		DBName: GoDotEnvVariable("DB_NAME"),
 	}
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		dbConfig.User, dbConfig.Pass, dbConfig.Url, dbConfig.DBName)
