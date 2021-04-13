@@ -10,4 +10,5 @@ const (
 	UserAdded   = "Kullanıcı eklendi"
 	UserDeleted = "Kullanıcı silindi"
 	UserUpdated = "Kullanıcı güncellendi"
+	InvalidMail = "Geçersiz mail"
 )

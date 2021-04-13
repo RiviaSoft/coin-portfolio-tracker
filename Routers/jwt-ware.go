@@ -31,10 +31,7 @@ func registerHandler(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	result := business.AddUser(user)
-	if result.Success {
-		return c.JSON(result)
-	}
-	return c.SendStatus(409) // already exists
+	return c.JSON(result)
 }
 
 func loginHandler(c *fiber.Ctx) error {

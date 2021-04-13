@@ -33,6 +33,12 @@ func AddUser(user UserModel) Result {
 			Message: err.Error(),
 		}
 	}
+	if !Security.VerifyMail(hashedUser.Email) {
+		return Result{
+			Success: false,
+			Message: Messages.InvalidMail,
+		}
+	}
 	return Result{
 		Success: true,
 		Message: Messages.UserAdded,

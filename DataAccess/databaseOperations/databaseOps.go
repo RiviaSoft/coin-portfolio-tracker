@@ -99,9 +99,9 @@ func AddUser(user User) error {
 		return err
 	}
 	result := db.Create(&user)
-	if result.Statement.Error != nil {
-		log.Println(result.Statement.Error)
-		return result.Statement.Error
+	if result.Error != nil {
+		//log.Println(result.Error)
+		return result.Error
 	}
 	return nil
 }
