@@ -22,4 +22,11 @@ func SetupRoutes(api fiber.Router) {
 	//api.Get("/archivedOperations/get/id::id", GetByOperationId)
 	api.Post("/archivedoperations/add", AddArchivedOperation)
 	api.Post("/archivedOperations/delete", DeleteArchivedOperation)
+
+	//Wallet
+	api.Get("/wallets/getall", GetAllWallets)
+	api.Get("/wallets/getbyid", GetWalletById)
+	api.Post("/wallets/add", AddWallet)
+	api.Post("/wallets/delete", DeleteWallet)
+	api.Post("/wallets/deleteall", DeleteAllWallets)
 }

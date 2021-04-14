@@ -9,54 +9,65 @@ import (
 	"github.com/msrexe/portfolio-tracker/Security"
 )
 
-func GetAllOperations(c *fiber.Ctx) error {
+func GetAllWallets(c *fiber.Ctx) error {
 	claims := Security.GetUserClaims(c)
-	result, err := business.GetAllBuyOperations(int(claims["uid"].(float64)))
+	result, err := business.GetWalletByUserId(int(claims["uid"].(float64)))
 	if err != nil {
 		return c.SendString(err.Error())
 	}
 	return c.JSON(result)
 }
-func AddOperation(c *fiber.Ctx) error {
-	c.Accepts("application/json")
-	var operation RecentBuyOperation
-	err := json.Unmarshal(c.Body(), &operation)
-	if err != nil {
-		return c.SendStatus(fiber.StatusBadRequest)
-	}
+
+func GetWalletById(c *fiber.Ctx) error {
 	claims := Security.GetUserClaims(c)
-	if operation.UserId != int(claims["uid"].(float64)) {
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
-	result := business.AddBuyOperation(operation)
-	return c.JSON(result)
-}
-func DeleteOperation(c *fiber.Ctx) error {
-	c.Accepts("application/json")
-	var operation RecentBuyOperation
-	err := json.Unmarshal(c.Body(), &operation)
+	result, err := business.GetWalletByName(int(claims["uid"].(float64)), c.Params("wallet"))
 	if err != nil {
-		return c.SendStatus(fiber.StatusBadRequest)
+		return c.SendString(err.Error())
 	}
-	claims := Security.GetUserClaims(c)
-	if operation.UserId != int(claims["uid"].(float64)) {
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
-	result := business.DeleteBuyOperation(operation)
 	return c.JSON(result)
 }
 
-func UpdateOperation(c *fiber.Ctx) error {
+func AddWallet(c *fiber.Ctx) error {
 	c.Accepts("application/json")
-	var operation RecentBuyOperation
-	err := json.Unmarshal(c.Body(), &operation)
+	var wallet Wallet
+	err := json.Unmarshal(c.Body(), &wallet)
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 	claims := Security.GetUserClaims(c)
-	if operation.UserId != int(claims["uid"].(float64)) {
+	if wallet.UserId != int(claims["uid"].(float64)) {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
-	result := business.UpdateBuyOperation(operation)
+	result := business.AddWallet(wallet)
+	return c.JSON(result)
+}
+
+func DeleteWallet(c *fiber.Ctx) error {
+	c.Accepts("application/json")
+	var wallet Wallet
+	err := json.Unmarshal(c.Body(), &wallet)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	claims := Security.GetUserClaims(c)
+	if wallet.UserId != int(claims["uid"].(float64)) {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	result := business.DeleteWallet(wallet)
+	return c.JSON(result)
+}
+
+func DeleteAllWallets(c *fiber.Ctx) error {
+	c.Accepts("application/json")
+	var wallet Wallet
+	err := json.Unmarshal(c.Body(), &wallet)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	claims := Security.GetUserClaims(c)
+	if wallet.UserId != int(claims["uid"].(float64)) {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	result := business.DeleteAllWallet(wallet.UserId, wallet.Name)
 	return c.JSON(result)
 }

@@ -29,3 +29,11 @@ CREATE TABLE `users` (
   `password_hash` varchar(300) NOT NULL,
     PRIMARY KEY (id)
 )  CHARSET=utf8mb4;
+
+CREATE TABLE `wallets` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `operation_id` int(10) NOT NULL,
+  `name` varchar(15) NOT NULL,
+  PRIMARY KEY (id)
+) CHARSET=utf8mb4;

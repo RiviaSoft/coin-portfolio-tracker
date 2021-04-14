@@ -44,3 +44,10 @@ type ArchivedOperation struct {
 	BuyCost    float32 `json:"buycost"`
 	SellCost   float32 `json:"sellcost"`
 }
+
+type Wallet struct {
+	Id          int                `json:"id"`
+	UserId      int                `json:"userid"`
+	OperationId RecentBuyOperation `json:"operationId"`
+	Name        string             `json:"name"`
+}

@@ -139,3 +139,73 @@ func UpdateUser(user User) error {
 	db.Select("id = ?", user.Id).Updates(&user)
 	return nil
 }
+
+//***********************************************************************************
+//WALLET
+func AddWallet(wallet Wallet) error {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+	result := db.Create(&wallet)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func GetAllWallet(userId int) ([]Wallet, error) {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+	var wallets []Wallet
+	result := db.Where("user_id = ?", strconv.Itoa(userId)).Find(&wallets)
+	if result.Error != nil {
+		log.Println(result.Error)
+		return nil, err
+	}
+	return wallets, nil
+}
+
+func GetWalletByName(userId int, walletName string) ([]Wallet, error) {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+	var wallets []Wallet
+	result := db.Where("user_id = ? AND name = ?", strconv.Itoa(userId), walletName).Find(&wallets)
+	if result.Error != nil {
+		log.Println(result.Error)
+		return nil, err
+	}
+	return wallets, nil
+}
+
+func DeleteWallet(wallet Wallet) error {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+	db.Delete(&wallet)
+	return nil
+}
+
+func DeleteAllWallet(userId int, walletName string) error {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+	result := db.Where("user_id = ? AND name = ?", strconv.Itoa(userId), walletName)
+	if result.Error != nil {
+		log.Println(result.Error)
+		return err
+	}
+	db.Delete(&result)
+	return nil
+}

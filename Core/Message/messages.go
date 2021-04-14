@@ -11,4 +11,9 @@ const (
 	UserDeleted = "Kullanıcı silindi"
 	UserUpdated = "Kullanıcı güncellendi"
 	InvalidMail = "Geçersiz mail"
+
+	WalletAdded         = "Cüzdan eklendi"
+	WalletDeleted       = "Cüzdan silindi"
+	WalletListed        = "Cüzdan listelendi"
+	WalletElementListed = "Cüzdan elemanı listelendi"
 )
