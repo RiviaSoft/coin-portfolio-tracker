@@ -18,7 +18,7 @@ func GetAllWallets(c *fiber.Ctx) error {
 	return c.JSON(result)
 }
 
-func GetWalletById(c *fiber.Ctx) error {
+func GetWalletByName(c *fiber.Ctx) error {
 	claims := Security.GetUserClaims(c)
 	result, err := business.GetWalletByName(int(claims["uid"].(float64)), c.Params("wallet"))
 	if err != nil {
