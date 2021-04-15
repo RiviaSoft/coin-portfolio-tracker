@@ -46,8 +46,8 @@ type ArchivedOperation struct {
 }
 
 type Wallet struct {
-	Id          int                `json:"id"`
-	UserId      int                `json:"userid"`
-	OperationId RecentBuyOperation `json:"operationid"`
-	Name        string             `json:"name"`
+	Id          int    `json:"id"`
+	UserId      int    `json:"userid"`
+	OperationId int    `json:"operationid"`
+	Name        string `json:"name"`
 }
