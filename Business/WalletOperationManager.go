@@ -9,8 +9,8 @@ import (
 	"github.com/msrexe/portfolio-tracker/DataAccess/databaseOperations"
 )
 
-func AddWallet(wallet Wallet) Result {
-	err := databaseOperations.AddWallet(wallet)
+func AddWalletOperation(walletOperation WalletOperation) Result {
+	err := databaseOperations.AddWalletOperation(walletOperation)
 	if err != nil {
 		return Result{
 			Success: false,
@@ -23,32 +23,17 @@ func AddWallet(wallet Wallet) Result {
 	}
 }
 
-func GetWalletByUserId(userId int) ([]Wallet, error) {
-	wallets, err := databaseOperations.GetAllWallet(userId)
+func GetAllWalletOperation(walletId int) ([]WalletOperation, error) {
+	wallets, err := databaseOperations.GetAllWalletOperation(walletId)
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err
 	}
 	return wallets, nil
 }
-func GetWalletById(userId int, walletId int) (Wallet, error) {
-	wallet, err := databaseOperations.GetWalletById(userId, walletId)
-	if err != nil {
-		log.Println(err.Error())
-		return Wallet{}, err
-	}
-	return wallet, nil
-}
 
-func DeleteWallet(wallet Wallet) Result {
-	err := databaseOperations.DeleteWallet(wallet)
-	if err != nil {
-		return Result{
-			Success: false,
-			Message: err.Error(),
-		}
-	}
-	err = databaseOperations.DeleteAllWalletOperations(wallet.Id)
+func DeleteWalletOperation(walletOperation WalletOperation) Result {
+	err := databaseOperations.DeleteWalletOperation(walletOperation)
 	if err != nil {
 		return Result{
 			Success: false,

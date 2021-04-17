@@ -170,19 +170,19 @@ func GetAllWallet(userId int) ([]Wallet, error) {
 	return wallets, nil
 }
 
-func GetWalletByName(userId int, walletName string) ([]Wallet, error) {
+func GetWalletById(userId int, id int) (Wallet, error) {
 	db, err := ConnectDB()
 	if err != nil {
 		log.Println(err.Error())
-		return nil, err
+		return Wallet{}, err
 	}
-	var wallets []Wallet
-	result := db.Where("user_id = ? AND name = ?", strconv.Itoa(userId), walletName).Find(&wallets)
+	var wallet Wallet
+	result := db.Where("user_id = ? AND id = ?", strconv.Itoa(userId), strconv.Itoa(id)).Find(&wallet)
 	if result.Error != nil {
 		log.Println(result.Error)
-		return nil, err
+		return Wallet{}, err
 	}
-	return wallets, nil
+	return wallet, nil
 }
 
 func DeleteWallet(wallet Wallet) error {
@@ -195,13 +195,53 @@ func DeleteWallet(wallet Wallet) error {
 	return nil
 }
 
-func DeleteAllWallet(userId int, walletName string) error {
+//***********************************************************************************
+//WALLET OPERATIONS
+func AddWalletOperation(walletOperation WalletOperation) error {
 	db, err := ConnectDB()
 	if err != nil {
 		log.Println(err.Error())
 		return err
 	}
-	result := db.Where("user_id = ? AND name = ?", strconv.Itoa(userId), walletName)
+	result := db.Create(&walletOperation)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func GetAllWalletOperation(walletId int) ([]WalletOperation, error) {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+	var walletOperations []WalletOperation
+	result := db.Where("wallet_id = ?", strconv.Itoa(walletId)).Find(&walletOperations)
+	if result.Error != nil {
+		log.Println(result.Error)
+		return nil, err
+	}
+	return walletOperations, nil
+}
+
+func DeleteWalletOperation(walletOperation WalletOperation) error {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+	db.Delete(&walletOperation)
+	return nil
+}
+
+func DeleteAllWalletOperations(walletId int) error {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+	result := db.Table("wallet_operations").Where("wallet_id = ?", strconv.Itoa(walletId))
 	if result.Error != nil {
 		log.Println(result.Error)
 		return err

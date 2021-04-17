@@ -33,7 +33,13 @@ CREATE TABLE `users` (
 CREATE TABLE `wallets` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
-  `operation_id` int(10) NOT NULL,
   `name` varchar(15) NOT NULL,
+  PRIMARY KEY (id)
+) CHARSET=utf8mb4;
+
+CREATE TABLE `wallet_operations` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `wallet_id` int(10) NOT NULL,
+  `operation_id` int(10) NOT NULL,
   PRIMARY KEY (id)
 ) CHARSET=utf8mb4;

@@ -25,8 +25,13 @@ func SetupRoutes(api fiber.Router) {
 
 	//Wallet
 	api.Get("/wallets/getall", GetAllWallets)
-	api.Get("/wallets/getbyname", GetWalletByName)
+	api.Get("/wallets/getbyid", GetWalletById)
 	api.Post("/wallets/add", AddWallet)
 	api.Post("/wallets/delete", DeleteWallet)
-	api.Post("/wallets/deleteall", DeleteAllWallets)
+	//update eklenecek
+
+	//Wallet Operations
+	api.Get("/walletoperations/getall", GetAllWalletOperation)
+	api.Post("/walletoperations/add", AddWalletOperation)
+	api.Post("/walletoperations/delete", DeleteWallet)
 }

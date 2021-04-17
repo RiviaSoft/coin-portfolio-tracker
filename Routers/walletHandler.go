@@ -2,6 +2,7 @@ package Routers
 
 import (
 	"encoding/json"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	business "github.com/msrexe/portfolio-tracker/Business"
@@ -18,9 +19,10 @@ func GetAllWallets(c *fiber.Ctx) error {
 	return c.JSON(result)
 }
 
-func GetWalletByName(c *fiber.Ctx) error {
+func GetWalletById(c *fiber.Ctx) error {
 	claims := Security.GetUserClaims(c)
-	result, err := business.GetWalletByName(int(claims["uid"].(float64)), c.Params("wallet"))
+	id, _ := strconv.Atoi(c.Params("id"))
+	result, err := business.GetWalletById(int(claims["uid"].(float64)), id)
 	if err != nil {
 		return c.SendString(err.Error())
 	}
@@ -54,20 +56,5 @@ func DeleteWallet(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 	result := business.DeleteWallet(wallet)
-	return c.JSON(result)
-}
-
-func DeleteAllWallets(c *fiber.Ctx) error {
-	c.Accepts("application/json")
-	var wallet Wallet
-	err := json.Unmarshal(c.Body(), &wallet)
-	if err != nil {
-		return c.SendStatus(fiber.StatusBadRequest)
-	}
-	claims := Security.GetUserClaims(c)
-	if wallet.UserId != int(claims["uid"].(float64)) {
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
-	result := business.DeleteAllWallet(wallet.UserId, wallet.Name)
 	return c.JSON(result)
 }
