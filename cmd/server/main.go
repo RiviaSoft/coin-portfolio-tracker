@@ -14,6 +14,7 @@ func init() {
 	app := fiber.New()
 	api := app.Group("/api")
 
+	Routers.SetupCORS(api)
 	Routers.SetupMW(api)
 	Routers.SetupRoutes(api)
 
