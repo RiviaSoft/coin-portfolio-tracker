@@ -35,15 +35,19 @@ func registerHandler(c *fiber.Ctx) error {
 }
 
 func loginHandler(c *fiber.Ctx) error {
-	email := c.FormValue("email")
-	pass := c.FormValue("password")
+	c.Accepts("application/json")
+	var requestedUser UserModel
+	err1 := json.Unmarshal(c.Body(), &requestedUser)
+	if err1 != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
 
-	user, err := business.GetUser(email)
+	user, err := business.GetUser(requestedUser.Email)
 	if err != nil {
 		return c.SendStatus(fiber.StatusNotFound)
 	}
 	// Throws Unauthorized error
-	if !Security.CheckPasswordHash(pass, user.PasswordHash) {
+	if !Security.CheckPasswordHash(requestedUser.Password, user.PasswordHash) {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 	t, err := Security.CreateToken(user.Id, user.Name, user.Email)
