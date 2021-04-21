@@ -15,8 +15,8 @@ func GetCurrentUser(c *fiber.Ctx) error {
 	if err != nil {
 		return c.SendString(err.Error())
 	}
-	result.PasswordHash = ""
-	return c.JSON(result)
+	user := UserModel{Id: result.Id, Name: result.Name, Email: result.Email, Password: ""}
+	return c.JSON(user)
 }
 
 func UpdateUser(c *fiber.Ctx) error {
