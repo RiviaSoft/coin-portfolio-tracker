@@ -44,14 +44,8 @@ func AddUser(user UserModel) Result {
 		Message: Messages.UserAdded,
 	}
 }
-func DeleteUser(user UserModel) Result {
-	hashedPass, _ := Security.HashPassword(user.Password)
-	hashedUser := User{
-		Name:         user.Name,
-		Email:        user.Email,
-		PasswordHash: hashedPass,
-	}
-	err := databaseOperations.DeleteUser(hashedUser)
+func DeleteUser(user User) Result {
+	err := databaseOperations.DeleteUser(user)
 	if err != nil {
 		return Result{
 			Success: false,

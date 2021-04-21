@@ -34,4 +34,9 @@ func SetupRoutes(api fiber.Router) {
 	api.Get("/walletoperations/getall", GetAllWalletOperation)
 	api.Post("/walletoperations/add", AddWalletOperation)
 	api.Post("/walletoperations/delete", DeleteWallet)
+
+	//User Operations
+	api.Get("/users/getcurrentuser", GetCurrentUser)
+	api.Post("/users/update", UpdateUser)
+	api.Post("/users/delete", DeleteUser)
 }
