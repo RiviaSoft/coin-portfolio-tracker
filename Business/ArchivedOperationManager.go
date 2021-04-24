@@ -1,6 +1,8 @@
 package Business
 
 import (
+	"log"
+
 	Messages "github.com/msrexe/portfolio-tracker/Core/Message"
 	. "github.com/msrexe/portfolio-tracker/Core/Result"
 	"github.com/msrexe/portfolio-tracker/DataAccess/databaseOperations"
@@ -15,6 +17,15 @@ func GetAllArchivedOperations(userId int) ([]ArchivedOperation, error) {
 		return nil, err
 	}
 	return result, nil
+}
+
+func GetArchivedOperationById(userId int, operationId int) (ArchivedOperation, error) {
+	operation, err := databaseOperations.GetArchivedOperationById(userId, operationId)
+	if err != nil {
+		log.Println(err.Error())
+		return ArchivedOperation{}, err
+	}
+	return operation, nil
 }
 
 func AddArchivedOperation(operation ArchivedOperation) Result {

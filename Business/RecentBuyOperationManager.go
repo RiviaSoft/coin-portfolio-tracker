@@ -1,6 +1,8 @@
 package Business
 
 import (
+	"log"
+
 	Messages "github.com/msrexe/portfolio-tracker/Core/Message"
 	. "github.com/msrexe/portfolio-tracker/Core/Result"
 	. "github.com/msrexe/portfolio-tracker/DataAccess"
@@ -15,6 +17,16 @@ func GetAllBuyOperations(userId int) ([]RecentBuyOperation, error) {
 	}
 	return result, nil
 }
+
+func GetBuyOperationById(userId int, operationId int) (RecentBuyOperation, error) {
+	operation, err := databaseOperations.GetRecentBuyOperationById(userId, operationId)
+	if err != nil {
+		log.Println(err.Error())
+		return RecentBuyOperation{}, err
+	}
+	return operation, nil
+}
+
 func AddBuyOperation(operation RecentBuyOperation) Result {
 	recentBuyOperations, err := databaseOperations.GetAllRecentBuyOperation(operation.UserId)
 	if err != nil {

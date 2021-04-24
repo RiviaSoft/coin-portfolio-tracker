@@ -33,6 +33,21 @@ func GetAllRecentBuyOperation(userId int) ([]RecentBuyOperation, error) {
 	return operations, nil
 }
 
+func GetRecentBuyOperationById(userId int, id int) (RecentBuyOperation, error) {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return RecentBuyOperation{}, err
+	}
+	var operation RecentBuyOperation
+	result := db.Table("recent_buy_operations").Where("user_id = ? AND id = ?", strconv.Itoa(userId), strconv.Itoa(id)).Find(&operation)
+	if result.Error != nil {
+		log.Println(result.Error)
+		return RecentBuyOperation{}, err
+	}
+	return operation, nil
+}
+
 func DeleteRecentBuyOperation(operation RecentBuyOperation) error {
 	db, err := ConnectDB()
 	if err != nil {
@@ -78,6 +93,21 @@ func GetAllArchivedOperation(userId int) ([]ArchivedOperation, error) {
 		return nil, err
 	}
 	return operations, nil
+}
+
+func GetArchivedOperationById(userId int, id int) (ArchivedOperation, error) {
+	db, err := ConnectDB()
+	if err != nil {
+		log.Println(err.Error())
+		return ArchivedOperation{}, err
+	}
+	var operation ArchivedOperation
+	result := db.Table("archived_operations").Where("user_id = ? AND id = ?", strconv.Itoa(userId), strconv.Itoa(id)).Find(&operation)
+	if result.Error != nil {
+		log.Println(result.Error)
+		return ArchivedOperation{}, err
+	}
+	return operation, nil
 }
 
 func DeleteArchivedOperation(operation ArchivedOperation) error {
