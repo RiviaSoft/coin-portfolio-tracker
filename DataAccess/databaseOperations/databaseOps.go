@@ -10,6 +10,8 @@ import (
 //RECENT BUY OPERATION
 func AddRecentBuyOperation(operation RecentBuyOperation) error {
 	db, err := ConnectDB()
+	conn, _ := db.DB()
+	defer conn.Close()
 	db.Create(&operation)
 	if err != nil {
 		log.Println(err.Error())
@@ -24,6 +26,8 @@ func GetAllRecentBuyOperation(userId int) ([]RecentBuyOperation, error) {
 		log.Println(err.Error())
 		return nil, err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	var operations []RecentBuyOperation
 	result := db.Where("user_id = ?", strconv.Itoa(userId)).Find(&operations)
 	if result.Error != nil {
@@ -39,6 +43,8 @@ func GetRecentBuyOperationById(userId int, id int) (RecentBuyOperation, error) {
 		log.Println(err.Error())
 		return RecentBuyOperation{}, err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	var operation RecentBuyOperation
 	result := db.Table("recent_buy_operations").Where("user_id = ? AND id = ?", strconv.Itoa(userId), strconv.Itoa(id)).Find(&operation)
 	if result.Error != nil {
@@ -54,6 +60,8 @@ func DeleteRecentBuyOperation(operation RecentBuyOperation) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	db.Delete(&operation)
 	return nil
 }
@@ -64,6 +72,8 @@ func UpdateRecentBuyOperation(operation RecentBuyOperation) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	db.Select("id = ?", operation.Id).Updates(&operation)
 	return nil
 }
@@ -72,6 +82,8 @@ func UpdateRecentBuyOperation(operation RecentBuyOperation) error {
 //ARCHIVED OPERATION
 func AddArchivedOperation(operation ArchivedOperation) error {
 	db, err := ConnectDB()
+	conn, _ := db.DB()
+	defer conn.Close()
 	db.Create(&operation)
 	if err != nil {
 		log.Println(err.Error())
@@ -86,6 +98,8 @@ func GetAllArchivedOperation(userId int) ([]ArchivedOperation, error) {
 		log.Println(err.Error())
 		return nil, err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	var operations []ArchivedOperation
 	result := db.Where("user_id = ?", strconv.Itoa(userId)).Find(&operations)
 	if result.Error != nil {
@@ -101,6 +115,8 @@ func GetArchivedOperationById(userId int, id int) (ArchivedOperation, error) {
 		log.Println(err.Error())
 		return ArchivedOperation{}, err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	var operation ArchivedOperation
 	result := db.Table("archived_operations").Where("user_id = ? AND id = ?", strconv.Itoa(userId), strconv.Itoa(id)).Find(&operation)
 	if result.Error != nil {
@@ -116,6 +132,8 @@ func DeleteArchivedOperation(operation ArchivedOperation) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	db.Delete(&operation)
 	return nil
 }
@@ -128,6 +146,8 @@ func AddUser(user User) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	result := db.Create(&user)
 	if result.Error != nil {
 		//log.Println(result.Error)
@@ -142,6 +162,8 @@ func GetByMail(mail string) (User, error) {
 		log.Println(err.Error())
 		return User{}, err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	var user User
 	result := db.Where("email = ?", mail).Find(&user)
 	if result.Error != nil {
@@ -156,6 +178,8 @@ func DeleteUser(user User) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	db.Delete(&user)
 	return nil
 }
@@ -166,6 +190,8 @@ func UpdateUser(user User) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	db.Select("id = ?", user.Id).Updates(&user)
 	return nil
 }
@@ -178,6 +204,8 @@ func AddWallet(wallet Wallet) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	result := db.Create(&wallet)
 	if result.Error != nil {
 		return result.Error
@@ -191,6 +219,8 @@ func GetAllWallet(userId int) ([]Wallet, error) {
 		log.Println(err.Error())
 		return nil, err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	var wallets []Wallet
 	result := db.Where("user_id = ?", strconv.Itoa(userId)).Find(&wallets)
 	if result.Error != nil {
@@ -206,6 +236,8 @@ func GetWalletById(userId int, id int) (Wallet, error) {
 		log.Println(err.Error())
 		return Wallet{}, err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	var wallet Wallet
 	result := db.Where("user_id = ? AND id = ?", strconv.Itoa(userId), strconv.Itoa(id)).Find(&wallet)
 	if result.Error != nil {
@@ -221,6 +253,8 @@ func DeleteWallet(wallet Wallet) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	db.Delete(&wallet)
 	return nil
 }
@@ -233,6 +267,8 @@ func AddWalletOperation(walletOperation WalletOperation) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	result := db.Create(&walletOperation)
 	if result.Error != nil {
 		return result.Error
@@ -242,6 +278,8 @@ func AddWalletOperation(walletOperation WalletOperation) error {
 
 func GetAllWalletOperation(walletId int) ([]WalletOperation, error) {
 	db, err := ConnectDB()
+	conn, _ := db.DB()
+	defer conn.Close()
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err
@@ -257,6 +295,8 @@ func GetAllWalletOperation(walletId int) ([]WalletOperation, error) {
 
 func DeleteWalletOperation(walletOperation WalletOperation) error {
 	db, err := ConnectDB()
+	conn, _ := db.DB()
+	defer conn.Close()
 	if err != nil {
 		log.Println(err.Error())
 		return err
@@ -271,6 +311,8 @@ func DeleteAllWalletOperations(walletId int) error {
 		log.Println(err.Error())
 		return err
 	}
+	conn, _ := db.DB()
+	defer conn.Close()
 	result := db.Table("wallet_operations").Where("wallet_id = ?", strconv.Itoa(walletId))
 	if result.Error != nil {
 		log.Println(result.Error)
