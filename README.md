@@ -147,9 +147,9 @@ GET || */wallets/getall #kullanıcıya ait tüm cüzdanları getirir
 
 GET || */wallets/getbyid?id=2 #kullanıcıya ait 2 nolu cüzdanını getirir
 
-POST || */wallets/add #yeni cüzdan oluşturma veya cüzdana coin eklemeye yarar
+POST || */wallets/add #yeni cüzdan oluşturmaya yarar
 
-POST || */wallets/delete #[c](//cüzdandaki)üzdanı siler
+POST || */wallets/delete #cüzdanı siler
 
 **********************************************************
 
