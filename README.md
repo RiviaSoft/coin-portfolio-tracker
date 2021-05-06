@@ -167,7 +167,7 @@ request :
 
 }
 
-GET || */walletoperations/getall #cüzdana ait tüm işlemleri(coinleri) getirir
+GET || */walletoperations/getall?id=2 #2 nolu cüzdana ait tüm işlemleri(coinleri) getirir
 
 POST || */walletoperations/add #cüzdana coin eklemeye yarar
 
