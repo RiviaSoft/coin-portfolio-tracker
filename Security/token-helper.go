@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	EXPIRATION_TIME = time.Now().Add(time.Hour * 24).Unix()
+	EXPIRATION_TIME = time.Now().Add(time.Hour * 60).Unix()
 	//isUserExist          = false
 )
 

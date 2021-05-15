@@ -23,7 +23,7 @@ func AddWalletOperation(walletOperation WalletOperation) Result {
 	}
 }
 
-func GetAllWalletOperation(walletId int) ([]WalletOperation, error) {
+func GetAllWalletOperation(walletId int) ([]WalletOperationDTO, error) {
 	wallets, err := databaseOperations.GetAllWalletOperation(walletId)
 	if err != nil {
 		log.Println(err.Error())

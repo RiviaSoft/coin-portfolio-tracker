@@ -276,7 +276,7 @@ func AddWalletOperation(walletOperation WalletOperation) error {
 	return nil
 }
 
-func GetAllWalletOperation(walletId int) ([]WalletOperation, error) {
+func GetAllWalletOperation(walletId int) ([]WalletOperationDTO, error) {
 	db, err := ConnectDB()
 	conn, _ := db.DB()
 	defer conn.Close()
@@ -284,8 +284,9 @@ func GetAllWalletOperation(walletId int) ([]WalletOperation, error) {
 		log.Println(err.Error())
 		return nil, err
 	}
-	var walletOperations []WalletOperation
-	result := db.Table("wallet_operations").Where("wallet_id = ?", strconv.Itoa(walletId)).Find(&walletOperations)
+	var walletOperations []WalletOperationDTO
+	// result := db.Table("wallet_operations").Where("wallet_id = ?", strconv.Itoa(walletId)).Find(&walletOperations)
+	result := db.Table("wallet_operations").Joins("JOIN recent_buy_operations ON  recent_buy_operations.id = wallet_operations.operation_id").Where("wallet_id = ?", strconv.Itoa(walletId)).Scan(&walletOperations)
 	if result.Error != nil {
 		log.Println(result.Error)
 		return nil, err
