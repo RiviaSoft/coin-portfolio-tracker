@@ -302,7 +302,12 @@ func DeleteWalletOperation(walletOperation WalletOperation) error {
 		log.Println(err.Error())
 		return err
 	}
-	db.Table("wallet_operations").Delete(&walletOperation)
+	result := db.Table("wallet_operations").Where("id = ?", strconv.Itoa(walletOperation.Id))
+	if result.Error != nil {
+		log.Println(result.Error)
+		return err
+	}
+	db.Delete(&result)
 	return nil
 }
 

@@ -42,6 +42,6 @@ func DeleteWalletOperation(walletOperation WalletOperation) Result {
 	}
 	return Result{
 		Success: true,
-		Message: Messages.WalletAdded,
+		Message: Messages.WalletDeleted,
 	}
 }
