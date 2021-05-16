@@ -286,7 +286,12 @@ func GetAllWalletOperation(walletId int) ([]WalletOperationDTO, error) {
 	}
 	var walletOperations []WalletOperationDTO
 	// result := db.Table("wallet_operations").Where("wallet_id = ?", strconv.Itoa(walletId)).Find(&walletOperations)
-	result := db.Table("wallet_operations").Joins("JOIN recent_buy_operations ON  recent_buy_operations.id = wallet_operations.operation_id").Where("wallet_id = ?", strconv.Itoa(walletId)).Scan(&walletOperations)
+	result := db.Table("wallet_operations").
+		Select("wallet_operations.id, wallet_operations.wallet_id, wallet_operations.operation_id,"+
+			" recent_buy_operations.user_id, recent_buy_operations.coin_symbol, recent_buy_operations.coin_amount, recent_buy_operations.buy_cost").
+		Joins("INNER JOIN recent_buy_operations ON  recent_buy_operations.id = wallet_operations.operation_id").
+		Where("wallet_id = ?", strconv.Itoa(walletId)).
+		Scan(&walletOperations)
 	if result.Error != nil {
 		log.Println(result.Error)
 		return nil, err
@@ -302,16 +307,15 @@ func DeleteWalletOperation(walletOperation WalletOperation) error {
 		log.Println(err.Error())
 		return err
 	}
-	result := db.Table("wallet_operations").Where("id = ?", strconv.Itoa(walletOperation.Id))
+	result := db.Table("wallet_operations").Delete(&walletOperation)
 	if result.Error != nil {
 		log.Println(result.Error)
 		return err
 	}
-	db.Delete(&result)
 	return nil
 }
 
-func DeleteAllWalletOperations(walletId int) error {
+func DeleteAllWalletOperations(walletIdToDelete int) error {
 	db, err := ConnectDB()
 	if err != nil {
 		log.Println(err.Error())
@@ -319,11 +323,10 @@ func DeleteAllWalletOperations(walletId int) error {
 	}
 	conn, _ := db.DB()
 	defer conn.Close()
-	result := db.Table("wallet_operations").Where("wallet_id = ?", strconv.Itoa(walletId))
+	result := db.Table("wallet_operations").Where("wallet_id = ?", strconv.Itoa(walletIdToDelete)).Delete(WalletOperation{})
 	if result.Error != nil {
 		log.Println(result.Error)
 		return err
 	}
-	db.Delete(&result)
 	return nil
 }

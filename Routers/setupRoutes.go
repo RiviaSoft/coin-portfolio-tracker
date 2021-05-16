@@ -33,7 +33,7 @@ func SetupRoutes(api fiber.Router) {
 	//Wallet Operations
 	api.Get("/walletoperations/getall", GetAllWalletOperation)
 	api.Post("/walletoperations/add", AddWalletOperation)
-	api.Post("/walletoperations/delete", DeleteWallet)
+	api.Post("/walletoperations/delete", DeleteWalletOperation)
 
 	//User Operations
 	api.Get("/users/getcurrentuser", GetCurrentUser)
