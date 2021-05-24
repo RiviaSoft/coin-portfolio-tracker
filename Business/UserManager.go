@@ -61,6 +61,7 @@ func DeleteUser(user User) Result {
 func UpdateUser(user UserModel) Result {
 	hashedPass, _ := Security.HashPassword(user.Password)
 	hashedUser := User{
+		Id:           user.Id,
 		Name:         user.Name,
 		Email:        user.Email,
 		PasswordHash: hashedPass,
